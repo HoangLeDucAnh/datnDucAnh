@@ -40,18 +40,21 @@ label {
 }
 
 button {
-  float: right;
-  background: #555;
-  padding: 10px 15px;
-  color: #fff;
+  display: block;
+
+  width: 95%;
+  margin: 30px auto 20px;
+  background: #006dcc;
+  padding: 10px;
   border-radius: 5px;
-  margin-right: 10px;
-  border: none;
+  color: #fff;
+  border: 1px solid #fff;
+  cursor: pointer;
   transition: all 0.5s;
 }
 
 button:hover {
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 .error {
@@ -68,18 +71,30 @@ h1 {
   color: red;
 }
 
-a {
-  float: right;
-  background: #555;
-  padding: 10px 15px;
-  color: #fff;
-  border-radius: 5px;
-  margin-right: 10px;
-  border: none;
-  text-decoration: none;
-  transition: all 0.5s;
+.pass {
+  position: relative;
 }
 
-a:hover {
-  opacity: 0.7;
+.eye {
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  color: #888;
+}
+
+#show {
+  display: none;
+}
+.option {
+  display: flex;
+  justify-content: space-between;
+  width: 95%;
+  margin: 10px auto;
+}
+.option a {
+  font-size: 18px;
+  color: #0000ee;
+}
+.option a:active {
+  opacity: 0.8;
 }

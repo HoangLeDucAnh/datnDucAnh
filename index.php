@@ -15,19 +15,47 @@
         <?php if (isset($_GET['error'])) { ?>
             <p class="error"><?php echo $_GET['error']; ?></p>
         <?php } ?>
-        <label for="">User Name</label>
-        <input type="text" name="uname" placeholder="User Name">
+        <div class="userName">
+            <label for="">User Name</label>
+            <input type="text" name="uname" placeholder="User Name">
+        </div>
 
-        <label for="">Password</label>
-        <input type="password" name="password" placeholder="Password">
 
-        <span class=""eye>
-        <i class="fa fa-eye" id="show"></i>
-        <i class="fa fa-eye-slash" id="hide"></i>
-        </span>
 
-        <button type="submit">Login</button>
+        <div class="pass">
+            <label for="">Password</label>
+            <input type="password" name="password" placeholder="Password" id="inputPass">
+
+            <span class="eye" onclick=showAndHide()>
+                <i class="fa fa-eye" id="show"></i>
+                <i class="fa fa-eye-slash" id="hide"></i>
+            </span>
+        </div>
+
+        <button type="submit">LOGIN</button>
+
+        <div class="option">
+            <a href="registration.php">Sign up</a>
+            <a href="#">Forgot password</a>
+        </div>
+
     </form>
+    <script>
+        function showAndHide() {
+            let inputPass = document.querySelector("#inputPass")
+            let eye = document.querySelector("#show")
+            let eyeSlash = document.querySelector("#hide")
+            if (inputPass.type === "password") {
+                inputPass.type = "text"
+                eye.style.display = "block"
+                eyeSlash.style.display = "none"
+            } else {
+                inputPass.type = "password"
+                eye.style.display = "none"
+                eyeSlash.style.display = "block"
+            }
+        }
+    </script>
 </body>
 
 </html>

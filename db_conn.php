@@ -4,7 +4,7 @@ $sname = "localhost";
 $uname = "root";
 $password = "";
 
-$db_name = "test_db";
+$db_name = "reglog";
 
 $conn = mysqli_connect($sname, $uname, $password, $db_name);
 
