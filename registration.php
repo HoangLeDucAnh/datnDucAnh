@@ -35,7 +35,7 @@ if (isset($_POST["submit"])) {
     <!-- Bootstrap CSS v5.2.1 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <!-- my css -->
-    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./css/index.css">
 </head>
 
 <body>
@@ -71,7 +71,7 @@ if (isset($_POST["submit"])) {
         </div>
     </nav>
 
-    <div class="container regisForm">
+    <div class="container pt10">
         <h2>REGISTRATION FORM</h2>
 
         <form action="" method="post" autocomplete="off" class="py-2">
