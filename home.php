@@ -1,9 +1,7 @@
 <?php
 session_start();
-
+include "db_conn.php";
 if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
-
-
 ?>
 
     <!doctype html>
@@ -27,7 +25,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
     <body>
         <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
             <div class="container-fluid gap-5">
-                <a class="navbar-brand" href="#"><img src="./img/800px-HCMUT_official_logo.png" alt="logo" style="width: 60px" /></a>
+                <a class="navbar-brand" href="home.php"><img src="./img/800px-HCMUT_official_logo.png" alt="logo" style="width: 60px" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -37,7 +35,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Users</a>
+                            <a class="nav-link" href="users.php">Users</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Items</a>
@@ -59,54 +57,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
             </div>
         </nav>
 
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
-        </script>
-        <div class="container pt10">
-            <table id="myTable" class="table table-striped" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>name</th>
-                        <th>username</th>
-                        <th>email</th>
-                        <th>password</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $connect = mysqli_connect("localhost", "root", "", "reglog");
-                    if ($connect->connect_error) {
-                        die("connection failed:" . $connect->connect_error);
-                    }
-                    $sql = "SELECT * FROM tb_user";
-                    $result = mysqli_query($connect, $sql);
-                    if ($result->num_rows > 0) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["name"] . "</td><td>" . $row["username"] . "</td><td>" . $row["email"] . "</td><td>" . $row["password"] . "</td></tr>";
-                        }
-                        echo "</tbody></table>";
-                    } else {
-                        echo "0 result";
-                    }
-                    $connect->close();
-                    ?>
 
-
-        </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
-        </script>
-        <!-- jquery cdn -->
-        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-        <!-- dataTables cdn -->
-        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-        <!-- dataTables js -->
-        <script>
-            $(document).ready(function() {
-                $('#myTable').DataTable();
-            });
-        </script>
     </body>
 
     </html>

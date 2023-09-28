@@ -1,5 +1,6 @@
 <?php
 session_start();
+// connect db in this file
 include "db_conn.php";
 
 if (isset($_POST['uname']) && isset($_POST['password'])) {

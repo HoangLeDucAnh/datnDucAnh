@@ -1,16 +1,20 @@
 <?php
 require 'config.php';
+// if btn submit is clicked, make query to insert data to database
 if (isset($_POST["submit"])) {
     $name = $_POST["name"];
     $username = $_POST["username"];
     $email = $_POST["email"];
     $password = $_POST["password"];
     $confirmpassword = $_POST["confirmpassword"];
+
+    // check if username or email is already taken
     $duplicate = mysqli_query($conn, "SELECT * FROM tb_user WHERE username= '$username' OR email= '$email'");
     if (mysqli_num_rows($duplicate) > 0) {
         echo "<script> alert('Username or Email has already taken');</script>";
     } else {
         if ($password == $confirmpassword) {
+            // insert query
             $query = "INSERT INTO tb_user VALUE('', '$name', '$username', '$email', '$password')";
             mysqli_query($conn, $query);
             echo "<script> alert('Registration Successful');</script>";
@@ -20,8 +24,6 @@ if (isset($_POST["submit"])) {
     }
 }
 ?>
-<!doctype html>
-<html lang="en">
 
 <!doctype html>
 <html lang="en">
@@ -74,7 +76,8 @@ if (isset($_POST["submit"])) {
     <div class="container pt10">
         <h2>REGISTRATION FORM</h2>
 
-        <form action="" method="post" autocomplete="off" class="py-2">
+        <!-- set attribute name for each input -->
+        <form method="post" autocomplete="off" class="py-2">
             <div class="form-group py-2">
                 <label for="name">Name: </label>
                 <input type="text" name="name" id="name" class="form-control" placeholder="Name" required>
