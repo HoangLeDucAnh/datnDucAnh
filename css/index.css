@@ -36,3 +36,19 @@ li .logOut {
 .pt10 {
   padding-top: 10rem;
 }
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  background: #000;
+}
+.slider {
+  position: relative;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}

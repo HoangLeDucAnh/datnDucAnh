@@ -86,7 +86,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                             echo "<tr><td>" . $row["id"] . "</td><td>" . $row["name"] . "</td><td>" . $row["username"] . "</td><td>" . $row["email"] . "</td><td>" . $row["password"] . "</td>
                             <td>
                             <a href='update.php?updateid=" . $row["id"] . "' class='btn btn-primary'>Update</a>
-                            <a href='#' class='btn btn-danger'>Delete</a>
+                            <a href='delete.php?deleteid=" . $row["id"] . "' class='btn btn-danger'>Delete</a>
                             </td></tr>";
                         }
                         echo "</tbody></table>";
