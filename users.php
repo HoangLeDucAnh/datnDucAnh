@@ -95,23 +95,98 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                     }
                     $conn->close();
                     ?>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Add new user
+                    </button>
+
+                    <!-- Modal -->
+                    <?php
+                    require "db_conn.php";
+                    // if btn submit is clicked, make query to insert data to database
+                    if (isset($_POST["submit"])) {
+                        $name = $_POST["name"];
+                        $username = $_POST["username"];
+                        $email = $_POST["email"];
+                        $password = $_POST["password"];
+                        $confirmpassword = $_POST["confirmpassword"];
+
+                        // check if username or email is already taken
+                        $duplicate = mysqli_query($conn, "SELECT * FROM `tb_user` WHERE username= '$username' OR email= '$email'");
+                        if (mysqli_num_rows($duplicate) > 0) {
+                            echo "<script> alert('Username or Email has already taken');</script>";
+                        } else {
+                            if ($password == $confirmpassword) {
+                                // insert query
+                                $query = "INSERT INTO tb_user(name, username, email, password) VALUES ('$name', '$username', '$email', '$password')";
+                                mysqli_query($conn, $query);
+                                echo "<meta http-equiv='refresh' content='0'>";
+                            } else {
+                                echo "<script> alert('Password does not match')</script>";
+                            }
+                        }
+                    }
+                    ?>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">New user</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form method="post" autocomplete="off" class="py-2">
+                                    <div class="modal-body">
+                                        <div class="form-group py-2">
+                                            <label for="name">Name: </label>
+                                            <input type="text" name="name" id="name" class="form-control" placeholder="Name" required>
+                                        </div>
+                                        <div class="form-group py-2">
+                                            <label for="username">Username: </label>
+                                            <input type="text" name="username" id="username" class="form-control" placeholder="Username" required>
+                                        </div>
+                                        <div class="form-group py-2">
+                                            <label for="email">Email: </label>
+                                            <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
+                                        </div>
+                                        <div class="form-group py-2">
+                                            <label for="password">Password: </label>
+                                            <input type="text" class="form-control" name="password" id="password" placeholder="Password" required>
+                                        </div>
+                                        <div class="form-group py-2">
+                                            <label for="comfirmpassword">Confirm password:</label>
+                                            <input type="text" class="form-control" name="confirmpassword" id="confirmpassword" placeholder="Confirm password" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" name="submit" class="btn btn-primary" id="save">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
 
 
-        </div>
+                    </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
-        </script>
-        <!-- jquery cdn -->
-        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-        <!-- dataTables cdn -->
-        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-        <!-- dataTables js -->
-        <script>
-            $(document).ready(function() {
-                $('#myTable').DataTable();
-            });
-        </script>
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+                    </script>
+                    <!-- jquery cdn -->
+                    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+                    <!-- dataTables cdn -->
+                    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+                    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+                    <!-- dataTables js -->
+                    <script>
+                        $(document).ready(function() {
+                            $('#myTable').DataTable();
+                        });
+                    </script>
+                    <script>
+                        $('#save').click(function() {
+                            $('#exampleModal').modal('hide');
+                        });
+                    </script>
     </body>
 
     </html>
