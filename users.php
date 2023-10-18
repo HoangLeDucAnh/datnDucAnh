@@ -69,6 +69,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                         <th>username</th>
                         <th>email</th>
                         <th>password</th>
+                        <th>role</th>
                         <th>operation</th>
                     </tr>
                 </thead>
@@ -83,7 +84,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                     if ($result->num_rows > 0) {
                         // mysqli_fetch_assoc() function fetches a result row as an associative array.
                         while ($row = mysqli_fetch_assoc($result)) {
-                            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["name"] . "</td><td>" . $row["username"] . "</td><td>" . $row["email"] . "</td><td>" . $row["password"] . "</td>
+                            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["name"] . "</td><td>" . $row["username"] . "</td><td>" . $row["email"] . "</td><td>" . $row["password"] . "</td><td>" . $row["role"] . "</td>
                             <td>
                             <a href='update.php?updateid=" . $row["id"] . "' class='btn btn-primary'>Update</a>
                             <a href='delete.php?deleteid=" . $row["id"] . "' class='btn btn-danger'>Delete</a>
@@ -110,7 +111,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                         $email = $_POST["email"];
                         $password = $_POST["password"];
                         $confirmpassword = $_POST["confirmpassword"];
-
+                        $role = $_POST["role"];
                         // check if username or email is already taken
                         $duplicate = mysqli_query($conn, "SELECT * FROM `tb_user` WHERE username= '$username' OR email= '$email'");
                         if (mysqli_num_rows($duplicate) > 0) {
@@ -118,7 +119,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                         } else {
                             if ($password == $confirmpassword) {
                                 // insert query
-                                $query = "INSERT INTO tb_user(name, username, email, password) VALUES ('$name', '$username', '$email', '$password')";
+                                $query = "INSERT INTO tb_user(name, username, email, password, role) VALUES ('$name', '$username', '$email', '$password', '$role')";
                                 mysqli_query($conn, $query);
                                 echo "<meta http-equiv='refresh' content='0'>";
                             } else {
@@ -155,6 +156,15 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                                         <div class="form-group py-2">
                                             <label for="comfirmpassword">Confirm password:</label>
                                             <input type="text" class="form-control" name="confirmpassword" id="confirmpassword" placeholder="Confirm password" required>
+                                        </div>
+                                        <div class="py-2">
+                                            <label for="role" class="my-2">Role:</label>
+                                            <select class="form-select" aria-label="Default select example" name="role">
+                                                <option selected>Choose role</option>
+                                                <option value="admin">Admin</option>
+                                                <option value="user">User</option>
+                                            </select>
+
                                         </div>
                                     </div>
 

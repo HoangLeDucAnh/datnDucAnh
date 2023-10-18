@@ -35,7 +35,21 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="users.php">Users</a>
+                            <a id="user" class="nav-link" href="<?php if (isset($_SESSION['role'])) {
+                                                                    if ($_SESSION['role'] == 'admin') {
+                                                                        echo "users.php";
+                                                                    }
+                                                                }  ?>">Users</a>
+                            <?php if (isset($_SESSION['role']))
+                                if ($_SESSION['role'] == 'user')
+                                    echo "<script>document.getElementById('user').addEventListener('click', function(event) {
+                event.preventDefault();
+                alert('Must be admin to access User page');
+              })</script>"
+
+
+                            ?>
+
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Items</a>

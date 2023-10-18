@@ -12,7 +12,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
     $username = $row['username'];
     $email = $row['email'];
     $password = $row['password'];
-    $confirmpassword = $row['confirmpassword'];
+    $role = $row['role'];
     // check whenever the update button is clicked, the query is executed
     if (isset($_POST['save'])) {
         $name = $_POST['name'];
@@ -20,10 +20,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
         $email = $_POST['email'];
         $password = $_POST['password'];
         $confirmpassword = $_POST['confirmpassword'];
+        $role = $_POST['role'];
 
         if ($password == $confirmpassword) {
             // update query
-            $sql = "UPDATE `tb_user` SET name='$name', username = '$username', email='$email', password ='$password' WHERE id='$id'";
+            $sql = "UPDATE `tb_user` SET name='$name', username = '$username', email='$email', password ='$password', role='$role' WHERE id='$id'";
 
             $result = mysqli_query($conn, $sql);
             header("Location: users.php");
@@ -103,6 +104,15 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                 <div class="form-group py-2">
                     <label for="comfirmpassword" class="my-2">Confirm password:</label>
                     <input type="text" class="form-control" name="confirmpassword" id="confirmpassword" placeholder="Confirm password" required value=<?php echo $password ?>>
+                </div>
+                <div class="py-2">
+                    <label for="role" class="my-2">Role:</label>
+                    <select class="form-select" aria-label="Default select example" name="role">
+                        <option selected>Choose role</option>
+                        <option value="admin">Admin</option>
+                        <option value="user">User</option>
+                    </select>
+
                 </div>
                 <button type="submit" name="save" class="btn btn-outline-primary py-2 my-5 float-right">Save</button>
             </form>
