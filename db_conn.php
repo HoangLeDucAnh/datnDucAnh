@@ -4,7 +4,7 @@ $sname = "localhost";
 $uname = "root";
 $password = "";
 
-$db_name = "reglog";
+$db_name = "smarthome";
 
 $conn = mysqli_connect($sname, $uname, $password, $db_name);
 

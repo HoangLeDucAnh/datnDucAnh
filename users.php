@@ -2,7 +2,7 @@
 session_start();
 include "db_conn.php";
 if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
-?>
+    ?>
 
     <!doctype html>
     <html lang="en">
@@ -14,7 +14,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <!-- Bootstrap CSS v5.2.1 -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
         <!-- dataTables css -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
@@ -23,43 +24,23 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
     </head>
 
     <body>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
-            <div class="container-fluid gap-5">
-                <a class="navbar-brand" href="home.php"><img src="./img/800px-HCMUT_official_logo.png" alt="logo" style="width: 60px" /></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse gap-5" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-5">
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="home.php">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="users.php">Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Items</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
-                        </li>
-                    </ul>
+        <?php include "navbar.php"; ?>
 
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-2">
-                        <li class="nav-item">
-                            <span class="nav-link text-primary" href="#">Welcome, <?php echo $_SESSION['name']; ?></span>
-                        </li>
-                        <li>
-                            <a class="logOut btn btn-outline-primary" href="logout.php">Log Out</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <script>
+            const allNavLink = document.querySelectorAll('.nav-link');
+            allNavLink.forEach(navLink => {
+                document.querySelector('.nav-link.active')?.classList.remove('active');
+            })
+            allNavLink[1].classList.add('active');
+        </script>
+
+
+
 
         <!-- render by DataTables -->
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
-        </script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+            integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+            </script>
         <div class="container pt10">
             <table id="myTable" class="table table-striped" style="width:100%">
                 <thead>
@@ -79,7 +60,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                         die("connection failed:" . $conn->connect_error);
                     }
                     // select query
-                    $sql = "SELECT * FROM tb_user";
+                    $sql = "SELECT * FROM users";
                     $result = mysqli_query($conn, $sql);
                     if ($result->num_rows > 0) {
                         // mysqli_fetch_assoc() function fetches a result row as an associative array.
@@ -113,13 +94,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                         $confirmpassword = $_POST["confirmpassword"];
                         $role = $_POST["role"];
                         // check if username or email is already taken
-                        $duplicate = mysqli_query($conn, "SELECT * FROM `tb_user` WHERE username= '$username' OR email= '$email'");
+                        $duplicate = mysqli_query($conn, "SELECT * FROM `users` WHERE username= '$username' OR email= '$email'");
                         if (mysqli_num_rows($duplicate) > 0) {
                             echo "<script> alert('Username or Email has already taken');</script>";
                         } else {
                             if ($password == $confirmpassword) {
                                 // insert query
-                                $query = "INSERT INTO tb_user(name, username, email, password, role) VALUES ('$name', '$username', '$email', '$password', '$role')";
+                                $query = "INSERT INTO users(name, username, email, password, role) VALUES ('$name', '$username', '$email', '$password', '$role')";
                                 mysqli_query($conn, $query);
                                 echo "<meta http-equiv='refresh' content='0'>";
                             } else {
@@ -128,34 +109,41 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                         }
                     }
                     ?>
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h1 class="modal-title fs-5" id="exampleModalLabel">New user</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
                                 <form method="post" autocomplete="off" class="py-2">
                                     <div class="modal-body">
                                         <div class="form-group py-2">
                                             <label for="name">Name: </label>
-                                            <input type="text" name="name" id="name" class="form-control" placeholder="Name" required>
+                                            <input type="text" name="name" id="name" class="form-control" placeholder="Name"
+                                                required>
                                         </div>
                                         <div class="form-group py-2">
                                             <label for="username">Username: </label>
-                                            <input type="text" name="username" id="username" class="form-control" placeholder="Username" required>
+                                            <input type="text" name="username" id="username" class="form-control"
+                                                placeholder="Username" required>
                                         </div>
                                         <div class="form-group py-2">
                                             <label for="email">Email: </label>
-                                            <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
+                                            <input type="email" class="form-control" name="email" id="email"
+                                                placeholder="Email" required>
                                         </div>
                                         <div class="form-group py-2">
                                             <label for="password">Password: </label>
-                                            <input type="text" class="form-control" name="password" id="password" placeholder="Password" required>
+                                            <input type="text" class="form-control" name="password" id="password"
+                                                placeholder="Password" required>
                                         </div>
                                         <div class="form-group py-2">
                                             <label for="comfirmpassword">Confirm password:</label>
-                                            <input type="text" class="form-control" name="confirmpassword" id="confirmpassword" placeholder="Confirm password" required>
+                                            <input type="text" class="form-control" name="confirmpassword"
+                                                id="confirmpassword" placeholder="Confirm password" required>
                                         </div>
                                         <div class="py-2">
                                             <label for="role" class="my-2">Role:</label>
@@ -169,7 +157,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                                     </div>
 
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
                                         <button type="submit" name="submit" class="btn btn-primary" id="save">Save</button>
                                     </div>
                                 </form>
@@ -179,8 +168,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
 
                     </div>
 
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
-                    </script>
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+                        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
+                        crossorigin="anonymous">
+                        </script>
                     <!-- jquery cdn -->
                     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
                     <!-- dataTables cdn -->
@@ -188,12 +179,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
                     <!-- dataTables js -->
                     <script>
-                        $(document).ready(function() {
+                        $(document).ready(function () {
                             $('#myTable').DataTable();
                         });
                     </script>
                     <script>
-                        $('#save').click(function() {
+                        $('#save').click(function () {
                             $('#exampleModal').modal('hide');
                         });
                     </script>
@@ -202,7 +193,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
     </html>
 
 
-<?php
+    <?php
 } else {
     header("Location: index.php");
     exit();
