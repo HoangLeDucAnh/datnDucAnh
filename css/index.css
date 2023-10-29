@@ -52,3 +52,6 @@ li .logOut {
   transition: 0.4s;
   border-radius: 34px;
 }
+.navbar-expand-lg .navbar-collapse.collapse.show {
+  background-color: rgb(255, 255, 255);
+}

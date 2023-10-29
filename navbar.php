@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
-    <div class="container-fluid gap-5">
+    <div class="container-fluid">
         <a class="navbar-brand" href="home.php"><img src="./img/800px-HCMUT_official_logo.png" alt="logo"
                 style="width: 60px" /></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -20,11 +20,9 @@
                     <?php if (isset($_SESSION['role']))
                         if ($_SESSION['role'] == 'user')
                             echo "<script>document.getElementById('user').addEventListener('click', function(event) {
-                event.preventDefault();
-                alert('Must be admin to access Users Page');
-              })</script>"
-
-
+                                    event.preventDefault();
+                                    alert('Must be admin to access Users Page');
+                                    })</script>"
                                 ?>
 
                         </li>
