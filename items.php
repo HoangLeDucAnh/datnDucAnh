@@ -8,7 +8,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
     <html lang="en">
 
     <head>
-        <title>Users</title>
+        <title>Items</title>
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -33,7 +33,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
             allNavLink.forEach(navLink => {
                 document.querySelector('.nav-link.active')?.classList.remove('active');
             })
-            allNavLink[1].classList.add('active');
+            allNavLink[2].classList.add('active');
         </script>
 
 
@@ -48,11 +48,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Name</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Password</th>
-                        <th>Role</th>
+                        <th>Devices</th>
+                        <th>Locations</th>
+                        <th>Status</th>
                         <th>Operation</th>
                     </tr>
                 </thead>
@@ -62,15 +60,15 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                         die("connection failed:" . $conn->connect_error);
                     }
                     // select query
-                    $sql = "SELECT * FROM users";
+                    $sql = "SELECT * FROM devices";
                     $result = mysqli_query($conn, $sql);
                     if ($result->num_rows > 0) {
                         // mysqli_fetch_assoc() function fetches a result row as an associative array.
                         while ($row = mysqli_fetch_assoc($result)) {
-                            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["name"] . "</td><td>" . $row["username"] . "</td><td>" . $row["email"] . "</td><td>" . $row["password"] . "</td><td>" . $row["role"] . "</td>
+                            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["devices"] . "</td><td>" . $row["locations"] . "</td><td>" . $row["status"] . "</td>
                             <td>
-                            <a href='update.php?updateid=" . $row["id"] . "' class='btn btn-primary'>Update</a>
-                            <a href='delete.php?deleteid=" . $row["id"] . "' class='btn btn-danger'>Delete</a>
+                            <a href='updateDevice.php?updateid=" . $row["id"] . "' class='btn btn-primary'>Update</a>
+                            <a href='deleteDevice.php?deleteid=" . $row["id"] . "' class='btn btn-danger'>Delete</a>
                             </td></tr>";
                         }
                         echo "</tbody></table>";
@@ -81,7 +79,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                     ?>
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Add new user
+                        Add new device
                     </button>
 
                     <!-- Modal -->
@@ -89,73 +87,47 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                     require "db_conn.php";
                     // if btn submit is clicked, make query to insert data to database
                     if (isset($_POST["submit"])) {
-                        $name = $_POST["name"];
-                        $username = $_POST["username"];
-                        $email = $_POST["email"];
-                        $password = $_POST["password"];
-                        $confirmpassword = $_POST["confirmpassword"];
-                        $role = $_POST["role"];
-                        // check if username or email is already taken
-                        $duplicate = mysqli_query($conn, "SELECT * FROM `users` WHERE username= '$username' OR email= '$email'");
-                        if (mysqli_num_rows($duplicate) > 0) {
-                            echo "<script> alert('Username or Email has already taken');</script>";
-                        } else {
-                            if ($password == $confirmpassword) {
-                                // insert query
-                                $query = "INSERT INTO users(name, username, email, password, role) VALUES ('$name', '$username', '$email', '$password', '$role')";
-                                mysqli_query($conn, $query);
-                                echo "<meta http-equiv='refresh' content='0'>";
-                            } else {
-                                echo "<script> alert('Password does not match')</script>";
-                            }
-                        }
+                        $devices = $_POST["devices"];
+                        $locations = $_POST["locations"];
+                        $status = $_POST["status"];
+
+
+
+                        // insert query
+                        $query = "INSERT INTO devices(devices, locations, status) VALUES ('$devices', '$locations', '$status')";
+                        mysqli_query($conn, $query);
+                        echo "<meta http-equiv='refresh' content='0'>";
                     }
+
+
                     ?>
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">New user</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">New device</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
                                 <form method="post" autocomplete="off" class="py-2">
                                     <div class="modal-body">
                                         <div class="form-group py-2">
-                                            <label for="name">Name: </label>
-                                            <input type="text" name="name" id="name" class="form-control" placeholder="Name"
-                                                required>
+                                            <label for="devices">Device: </label>
+                                            <input type="text" name="devices" id="devices" class="form-control"
+                                                placeholder="Device" required>
                                         </div>
                                         <div class="form-group py-2">
-                                            <label for="username">Username: </label>
-                                            <input type="text" name="username" id="username" class="form-control"
-                                                placeholder="Username" required>
+                                            <label for="locations">Location: </label>
+                                            <input type="text" name="locations" id="locations" class="form-control"
+                                                placeholder="Location" required>
                                         </div>
                                         <div class="form-group py-2">
-                                            <label for="email">Email: </label>
-                                            <input type="email" class="form-control" name="email" id="email"
-                                                placeholder="Email" required>
+                                            <label for="status">Status: </label>
+                                            <input type="text" class="form-control" name="status" id="status"
+                                                placeholder="Status" required>
                                         </div>
-                                        <div class="form-group py-2">
-                                            <label for="password">Password: </label>
-                                            <input type="text" class="form-control" name="password" id="password"
-                                                placeholder="Password" required>
-                                        </div>
-                                        <div class="form-group py-2">
-                                            <label for="comfirmpassword">Confirm password:</label>
-                                            <input type="text" class="form-control" name="confirmpassword"
-                                                id="confirmpassword" placeholder="Confirm password" required>
-                                        </div>
-                                        <div class="py-2">
-                                            <label for="role" class="my-2">Role:</label>
-                                            <select class="form-select" aria-label="Default select example" name="role">
-                                                <option selected>Choose role</option>
-                                                <option value="admin">Admin</option>
-                                                <option value="user">User</option>
-                                            </select>
 
-                                        </div>
                                     </div>
 
                                     <div class="modal-footer">

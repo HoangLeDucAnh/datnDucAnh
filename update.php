@@ -54,7 +54,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
         <?php include "navbar.php"; ?>
 
         <div class="container pt10">
-            <h2>UPDATE FORM</h2>
+            <h2>UPDATE USER FORM</h2>
             <!-- set attribute name for each input -->
             <form method="post" autocomplete="off" class="py-2">
                 <div class="form-group py-2">

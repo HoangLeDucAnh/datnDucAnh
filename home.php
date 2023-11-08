@@ -40,7 +40,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                     <!-- == Entrance ======================================================================================== -->
                     <div class="card1">
                         <div class="card1 header">
-                            <h3 style="font-size: 1rem;">ENTRANCE</h3>
+                            <h3 style="font-size: 1rem;">ENTRANCE (NODE 1)</h3>
                         </div>
                         <div class="card-body1">
                             <a class="btn btn-primary" href="../rfidattendance/login.php" target="_blank">Entrance
@@ -81,7 +81,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                     <!-- == MONITORING ======================================================================================== -->
                     <div class="card1">
                         <div class="card1 header">
-                            <h3 style="font-size: 1rem;">MONITORING</h3>
+                            <h3 style="font-size: 1rem;">MONITORING (NODE 2)</h3>
                         </div>
 
                         <!-- Displays the humidity and temperature values received from ESP32. *** -->
