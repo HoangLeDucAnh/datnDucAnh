@@ -130,7 +130,7 @@ void loop() {
     Serial.println();
     Serial.println("---------------getDataRelay.php");
     
-    http.begin("http://192.168.1.9/loginSystem/relay/getDataRelay.php");  //--> Specify request destination
+    http.begin("http://192.168.1.8/loginSystem/relay/getDataRelay.php");  //--> Specify request destination
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");        //--> Specify content-type header
    
     httpCode = http.POST(postData); //--> Send the request
@@ -171,7 +171,7 @@ void loop() {
     Serial.println();
     Serial.println("---------------updateRELAYSdata_and_recordtable.php");
     // Example : http.begin("http://192.168.0.0/ESP32_MySQL_Database/Final/updateDHT11data_and_recordtable.php");
-    http.begin("http://192.168.1.9/loginSystem/relay/updateRELAYSdata_and_recordtable.php");  //--> Specify request destination
+    http.begin("http://192.168.1.8/loginSystem/relay/updateRELAYSdata_and_recordtable.php");  //--> Specify request destination
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");  //--> Specify content-type header
    
     httpCode = http.POST(postData); //--> Send the request
