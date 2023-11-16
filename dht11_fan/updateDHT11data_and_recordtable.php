@@ -8,8 +8,7 @@ if (!empty($_POST)) {
   $temperature = $_POST['temperature'];
   $humidity = $_POST['humidity'];
   $status_read_sensor_dht11 = $_POST['status_read_sensor_dht11'];
-  $led_01 = $_POST['led_01'];
-  $led_02 = $_POST['led_02'];
+  $fan = $_POST['fan'];
   //........................................
 
   //........................................ Get the time and date.
@@ -59,9 +58,9 @@ if (!empty($_POST)) {
   // This table is used to store and record DHT11 sensor data updated by ESP32. 
   // This table is also used to store and record the state of the LEDs, the state of the LEDs is controlled from the "home.php" page. 
   // This table is operated with the "INSERT" command, so this table will contain many rows.
-  $sql = "INSERT INTO livingroom_dht11_fan_record (id,board,temperature,humidity,status_read_sensor_dht11,LED_01,LED_02,time,date) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  $sql = "INSERT INTO livingroom_dht11_fan_record (id,board,temperature,humidity,status_read_sensor_dht11,fan,time,date) values(?, ?, ?, ?, ?, ?, ?, ?)";
   $q = $pdo->prepare($sql);
-  $q->execute(array($id_key, $board, $temperature, $humidity, $status_read_sensor_dht11, $led_01, $led_02, $tm, $dt));
+  $q->execute(array($id_key, $board, $temperature, $humidity, $status_read_sensor_dht11, $fan, $tm, $dt));
   //::::::::
 
   Database::disconnect();

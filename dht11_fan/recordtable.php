@@ -21,8 +21,7 @@
         <th>TEMPERATURE (°C)</th>
         <th>HUMIDITY (%)</th>
         <th>STATUS READ SENSOR DHT11</th>
-        <th>LED 01</th>
-        <th>LED 02</th>
+        <th>FAN</th>
         <th>TIME</th>
         <th>DATE (dd-mm-yyyy)</th>
       </tr>
@@ -48,8 +47,7 @@
         echo '<td class="bdr">' . $row['temperature'] . '</td>';
         echo '<td class="bdr">' . $row['humidity'] . '</td>';
         echo '<td class="bdr">' . $row['status_read_sensor_dht11'] . '</td>';
-        echo '<td class="bdr">' . $row['LED_01'] . '</td>';
-        echo '<td class="bdr">' . $row['LED_02'] . '</td>';
+        echo '<td class="bdr">' . $row['fan'] . '</td>';
         echo '<td class="bdr">' . $row['time'] . '</td>';
         echo '<td>' . $dateFormat . '</td>';
         echo '</tr>';

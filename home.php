@@ -45,6 +45,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                         <div class="card-body1">
                             <a class="btn btn-primary" href="../rfidattendance/login.php" target="_blank">Entrance
                                 Supervisor</a>
+                            <p id="date"></p>
+                            <p id="time"></p>
+
 
                         </div>
                     </div>
@@ -110,18 +113,27 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
 
                         <!-- Buttons for controlling the LEDs on Slave 2. ************************** -->
                         <div class="card-body1">
-                            <h4 class="LEDColor"><i class="fas fa-lightbulb"></i> LED 1</h4>
+                            <h4 class="LEDColor"><i class="fas fa-lightbulb"></i> Manual mode</h4>
                             <label class="switch1">
-                                <input type="checkbox" id="ESP32_01_TogLED_01"
-                                    onclick="GetTogBtnLEDState('ESP32_01_TogLED_01')">
+                                <input type="checkbox" id="ESP32_01_TogManual"
+                                    onclick="GetTogBtnModeState('ESP32_01_TogManual')">
                                 <div class="sliderTS"></div>
                             </label>
-                            <h4 class="LEDColor"><i class="fas fa-lightbulb"></i> LED 2</h4>
+                            <h4 class="LEDColor"><i class="fas fa-lightbulb"></i> Auto mode</h4>
+
+
                             <label class="switch1">
-                                <input type="checkbox" id="ESP32_01_TogLED_02"
-                                    onclick="GetTogBtnLEDState('ESP32_01_TogLED_02')">
+                                <input type="checkbox" id="ESP32_01_TogAuto"
+                                    onclick="GetTogBtnModeState('ESP32_01_TogAuto')">
                                 <div class="sliderTS"></div>
                             </label>
+                            <br>
+                            <label for="">
+                                Set temperature:
+                                <input type="text" style="width: 50px" id='setPoint'>
+                            </label>
+
+
                         </div>
 
                         <!-- *********************************************************************** -->
@@ -196,16 +208,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                                 document.getElementById("ESP32_01_Temp").innerHTML = myObj.temperature;
                                 document.getElementById("ESP32_01_Humd").innerHTML = myObj.humidity;
                                 document.getElementById("ESP32_01_Status_Read_DHT11").innerHTML = myObj.status_read_sensor_dht11;
+                                // document.getElementById("setPoint").value = myObj.setPoint;
                                 document.getElementById("ESP32_01_LTRD").innerHTML = "Time : " + myObj.ls_time + " | Date : " + myObj.ls_date + " (dd-mm-yyyy)";
-                                if (myObj.LED_01 == "ON") {
-                                    document.getElementById("ESP32_01_TogLED_01").checked = true;
-                                } else if (myObj.LED_01 == "OFF") {
-                                    document.getElementById("ESP32_01_TogLED_01").checked = false;
+
+                                if (myObj.Manual == "ON") {
+                                    document.getElementById("ESP32_01_TogManual").checked = true;
+                                } else if (myObj.Manual == "OFF") {
+                                    document.getElementById("ESP32_01_TogManual").checked = false;
                                 }
-                                if (myObj.LED_02 == "ON") {
-                                    document.getElementById("ESP32_01_TogLED_02").checked = true;
-                                } else if (myObj.LED_02 == "OFF") {
-                                    document.getElementById("ESP32_01_TogLED_02").checked = false;
+                                if (myObj.Auto == "ON") {
+                                    document.getElementById("ESP32_01_TogAuto").checked = true;
+                                } else if (myObj.Auto == "OFF") {
+                                    document.getElementById("ESP32_01_TogAuto").checked = false;
                                 }
                             }
                         }
@@ -219,26 +233,25 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                 //------------------------------------------------------------
 
                 //------------------------------------------------------------
-                function GetTogBtnLEDState(togbtnid) {
-                    if (togbtnid == "ESP32_01_TogLED_01") {
+                function GetTogBtnModeState(togbtnid) {
+                    if (togbtnid == "ESP32_01_TogManual") {
                         var togbtnchecked = document.getElementById(togbtnid).checked;
                         var togbtncheckedsend = "";
                         if (togbtnchecked == true) togbtncheckedsend = "ON";
                         if (togbtnchecked == false) togbtncheckedsend = "OFF";
-                        Update_LEDs("esp32_01", "LED_01", togbtncheckedsend);
+                        Update_LEDs("esp32_01", "Manual", togbtncheckedsend);
                     }
-                    if (togbtnid == "ESP32_01_TogLED_02") {
+                    if (togbtnid == "ESP32_01_TogAuto") {
                         var togbtnchecked = document.getElementById(togbtnid).checked;
                         var togbtncheckedsend = "";
-                        if (togbtnchecked == true) togbtncheckedsend = "ON";
+                        if (togbtnchecked == true) togbtncheckedsend = "ON"
                         if (togbtnchecked == false) togbtncheckedsend = "OFF";
-                        Update_LEDs("esp32_01", "LED_02", togbtncheckedsend);
+                        updateLed_SetPoint("esp32_01", "Auto", togbtncheckedsend, document.getElementById("setPoint").value);
+
                     }
                 }
                 //------------------------------------------------------------
-
-                //------------------------------------------------------------
-                function Update_LEDs(id, lednum, ledstate) {
+                function updateLed_SetPoint(id, mode, modestate, setpoint) {
                     if (window.XMLHttpRequest) {
                         // code for IE7+, Firefox, Chrome, Opera, Safari
                         xmlhttp = new XMLHttpRequest();
@@ -253,7 +266,25 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                     }
                     xmlhttp.open("POST", "dht11_fan/updateLEDs.php", true);
                     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    xmlhttp.send("id=" + id + "&lednum=" + lednum + "&ledstate=" + ledstate);
+                    xmlhttp.send("id=" + id + "&mode=" + mode + "&modestate=" + modestate + "&setpoint=" + setpoint);
+                }
+                //------------------------------------------------------------
+                function Update_LEDs(id, mode, modestate) {
+                    if (window.XMLHttpRequest) {
+                        // code for IE7+, Firefox, Chrome, Opera, Safari
+                        xmlhttp = new XMLHttpRequest();
+                    } else {
+                        // code for IE6, IE5
+                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    xmlhttp.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            //document.getElementById("demo").innerHTML = this.responseText;
+                        }
+                    }
+                    xmlhttp.open("POST", "dht11_fan/updateLEDs.php", true);
+                    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xmlhttp.send("id=" + id + "&mode=" + mode + "&modestate=" + modestate);
                 }
                 //------------------------------------------------------------
                 function Get_Data1(id) {
@@ -329,6 +360,20 @@ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
                     xmlhttp.send("id=" + id + "&relaynum=" + relaynum + "&relaystate=" + relaystate);
                 }
                 //------------------------------------------------------------
+
+                setInterval(updateTime, 1000)
+
+                function updateTime() {
+                    let date = new Date()
+                    let year = date.getFullYear()
+                    let month = date.getMonth() + 1
+                    let day = date.getDate()
+                    let hours = date.getHours()
+                    let minutes = date.getMinutes()
+                    let seconds = date.getSeconds()
+                    document.getElementById("date").innerHTML = `${day} - ${month} - ${year}`
+                    document.getElementById("time").innerHTML = `${hours}:${minutes}:${seconds}`
+                }
 
             </script>
         </div>

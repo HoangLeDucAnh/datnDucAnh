@@ -24,8 +24,9 @@ if (!empty($_POST)) {
     $myObj->temperature = $row['temperature'];
     $myObj->humidity = $row['humidity'];
     $myObj->status_read_sensor_dht11 = $row['status_read_sensor_dht11'];
-    $myObj->LED_01 = $row['LED_01'];
-    $myObj->LED_02 = $row['LED_02'];
+    $myObj->Manual = $row['Manual'];
+    $myObj->Auto = $row['Auto'];
+    $myObj->setpoint = $row['setpoint'];
     $myObj->ls_time = $row['time'];
     $myObj->ls_date = $dateFormat;
 
