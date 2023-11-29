@@ -16,11 +16,11 @@ DHT dht11_sensor(DHTPIN, DHTTYPE); //--> Initialize DHT sensor.
 #define ON_Board_LED 2 
 
 // Defines GPIO 33 as FAN.
-#define FAN 33 
+#define FAN 21 
 
 
 //======================================== SSID and Password of your WiFi router.
-const char* ssid = "DUC ANH";
+const char* ssid = "Anhtony";
 const char* password = "123456789";
 //======================================== 
 
@@ -197,7 +197,7 @@ void loop() {
     Serial.println();
     Serial.println("---------------getdata.php");
     
-    http.begin("http://192.168.1.8/loginSystem/dht11_fan/getdata.php");  //--> Specify request destination
+    http.begin("http://172.20.10.2/loginSystem/dht11_fan/getdata.php");  //--> Specify request destination
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");        //--> Specify content-type header
    
     httpCode = http.POST(postData); //--> Send the request
@@ -238,7 +238,7 @@ void loop() {
     Serial.println();
     Serial.println("---------------updateDHT11data_and_recordtable.php");
     // Example : http.begin("http://192.168.0.0/ESP32_MySQL_Database/Final/updateDHT11data_and_recordtable.php");
-    http.begin("http://192.168.1.8/loginSystem/dht11_fan/updateDHT11data_and_recordtable.php");  //--> Specify request destination
+    http.begin("http://172.20.10.2/loginSystem/dht11_fan/updateDHT11data_and_recordtable.php");  //--> Specify request destination
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");  //--> Specify content-type header
    
     httpCode = http.POST(postData); //--> Send the request

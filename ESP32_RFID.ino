@@ -9,13 +9,13 @@
 #include <MFRC522.h>
 //OLED-----------------------------
 #include <Wire.h>
-#include <Adafruit_GFX.h>          //https://github.com/adafruit/Adafruit-GFX-Library
-#include <Adafruit_SSD1306.h>      //https://github.com/adafruit/Adafruit_SSD1306
+#include <Adafruit_GFX.h>          
+#include <Adafruit_SSD1306.h>      
 //SERVO-----------------------------
 #include <ESP32Servo.h>
 
 Servo myServo;
-int servoPin = 13;
+int servoPin = 33;
 const int relay = 32;
 //************************************************************************
 #define SS_PIN  5
@@ -32,7 +32,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 MFRC522 mfrc522(SS_PIN, RST_PIN); // Create MFRC522 instance.
 //************************************************************************
 /* Set these to your desired credentials. */
-const char *ssid = "DUC ANH";
+const char *ssid = "Anhtony";
 const char *password = "123456789";
 const char* device_token  = "c0617c73fd89146e";
 //************************************************************************
@@ -42,12 +42,12 @@ String getData, Link;
 String OldCardID = "";
 unsigned long previousMillis1 = 0;
 unsigned long previousMillis2 = 0;
-String URL = "http://192.168.1.8/rfidattendance/getdata.php"; //computer IP or the server domain
+String URL = "http://172.20.10.2/rfidattendance/getdata.php"; //computer IP or the server domain
 //*************************Biometric Icons*********************************
 #define Wifi_start_width 54
 #define Wifi_start_height 49
 const uint8_t PROGMEM Wifi_start_bits[] = {
-  0x00,0x00,0x00,0x00,0x00,0x00,0x00
+ 0x00,0x00,0x00,0x00,0x00,0x00,0x00
 ,0x00,0x00,0x00,0x00,0x00,0x00,0x00
 ,0x00,0x00,0x00,0x00,0x00,0x00,0x00
 ,0x00,0x00,0x00,0x00,0x00,0x00,0x00
@@ -164,10 +164,7 @@ void setup() {
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
   }
-  // you can delet these three lines if you don't want to get the Adfruit logo appear
-  display.display();
-  delay(2000); // Pause for 2 seconds
-  display.clearDisplay();
+  
   //---------------------------------------------
   connectToWiFi();
   //---------------------------------------------
@@ -231,7 +228,6 @@ void loop() {
   SendCardID(CardID);
   delay(1000);
   display.clearDisplay();
-  myServo.write(0);
   delay(20);
 
 }
@@ -256,10 +252,10 @@ void SendCardID( String Card_uid ){
 
     if (httpCode == 200) {
       if (payload.substring(0, 5) == "login") {
-        myServo.write(180);
         digitalWrite(relay, HIGH);
-        delay(10000);
+        delay(1000);
         digitalWrite(relay, LOW);
+        openDoor();
         String user_name = payload.substring(5);
     //  Serial.println(user_name);
         
@@ -273,6 +269,9 @@ void SendCardID( String Card_uid ){
         display.display();
       }
       else if (payload.substring(0, 6) == "logout") {
+        digitalWrite(relay, HIGH);
+        delay(1000);
+        digitalWrite(relay, LOW);
         String user_name = payload.substring(6);
     //  Serial.println(user_name);
         
@@ -345,5 +344,11 @@ void connectToWiFi(){
     Serial.println(WiFi.localIP());  //IP address assigned to your ESP
     
     delay(1000);
+}
+void openDoor(){
+    myServo.write(90);
+    delay(10000);
+    myServo.write(0);
+
 }
 //=======================================================================
